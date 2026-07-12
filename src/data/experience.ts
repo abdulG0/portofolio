@@ -3,13 +3,17 @@ export const experienceData = [
     id: 1,
     period: "2024 — Present",
     position: "Founder & Full-Stack Developer",
-    company: "Your Company Name",
     description:
       "Building end-to-end technology solutions—from web platforms and AI applications to connected hardware and network infrastructure—for government, healthcare, education, and private organizations.",
     achievements: [
-      "Launched Darhum, a full-stack property rental marketplace",
-      "Developed BlogLaunch, a self-service blogging platform",
-      "Built AI PreCheck, an AI-powered healthcare pre-assessment tool",
+“Launched Darhum, a full-stack property rental marketplace with booking and property management features.”,
+“Built BlogLaunch, a self-service platform that enables anyone to create and manage their own blog.”,
+“Developed AI PreCheck, an AI-powered healthcare pre-assessment platform.”,
+“Designed and deployed end-to-end web applications from concept to production.”,
+“Integrated artificial intelligence into practical business and healthcare solutions.”,
+“Developed custom software solutions for startups, businesses, and organizations.”,
+“Experienced in delivering technology solutions for commercial and public-sector projects.”
+]
     ],
   },
   {
