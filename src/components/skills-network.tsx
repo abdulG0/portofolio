@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { skillsData } from "@/data/skills";
 
@@ -70,21 +69,20 @@ export function SkillsNetwork() {
           </svg>
 
           {nodes.map((node) => (
-            <motion.button
+            <button
               key={node.id}
+              type="button"
               onMouseEnter={() => setActive(node.id)}
               onFocus={() => setActive(node.id)}
-              className={`absolute -translate-x-1/2 rounded-full border px-4 py-2 text-sm font-medium transition-all ${
+              className={`absolute -translate-x-1/2 rounded-full border px-4 py-2 text-sm font-medium transition-all hover:scale-[1.03] active:scale-[0.98] ${
                 active === node.id
                   ? "border-cyan-400 bg-cyan-500/15 text-cyan-600 shadow-[0_0_32px_rgba(56,189,248,0.18)] dark:text-cyan-100 dark:border-cyan-300 dark:bg-cyan-300/15"
                   : "border-border bg-muted/50 text-muted-foreground hover:border-cyan-400 hover:text-foreground dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:border-cyan-300 dark:hover:text-white"
               }`}
               style={{ left: `${node.x}%`, top: `${node.y}%` }}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
             >
               {node.label}
-            </motion.button>
+            </button>
           ))}
         </div>
 

@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { profileData } from "@/data/profile";
 import { useTranslation } from "@/i18n/LanguageProvider";
 import { useTheme } from "@/components/theme-provider";
-import { Home, User, Briefcase, Grid, FileText, Mail } from "lucide-react";
+import { Home, User, Briefcase, Grid, FileText, Mail, Moon, Sun } from "lucide-react";
 
 type Particle = {
   id: number;
@@ -36,9 +36,9 @@ function randomParticle(seed: number): Particle {
 }
 
 export function HeroCinematic() {
-  const [cursor, setCursor] = useState({ x: 50, y: 50 });
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const spotlightRef = useRef<HTMLDivElement | null>(null);
   const { t, setLocale, locale } = useTranslation();
   const { theme, toggleTheme } = useTheme();
 
@@ -49,34 +49,42 @@ export function HeroCinematic() {
   );
 
   useEffect(() => {
-    const handleMove = (event: MouseEvent) => {
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return;
+    // Skip pointer effects on touch / small screens where they aren't visible.
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+      return;
+    }
 
-      setCursor({
-        x: ((event.clientX - rect.left) / rect.width) * 100,
-        y: ((event.clientY - rect.top) / rect.height) * 100,
+    let frame = 0;
+    const handleMove = (event: MouseEvent) => {
+      if (frame) return;
+      // Throttle to one update per animation frame and write directly to the
+      // DOM (no React re-render) to keep interactions smooth.
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const rect = containerRef.current?.getBoundingClientRect();
+        const spotlight = spotlightRef.current;
+        if (!rect || !spotlight) return;
+        const x = ((event.clientX - rect.left) / rect.width) * 100;
+        const y = ((event.clientY - rect.top) / rect.height) * 100;
+        spotlight.style.left = `${x}%`;
+        spotlight.style.top = `${y}%`;
       });
     };
 
-    const updateViewportState = () => setIsMobile(window.innerWidth < 640);
-
-    updateViewportState();
-    window.addEventListener("resize", updateViewportState);
-
     const element = containerRef.current;
-    element?.addEventListener("mousemove", handleMove);
+    element?.addEventListener("mousemove", handleMove, { passive: true });
     return () => {
-      window.removeEventListener("resize", updateViewportState);
+      if (frame) cancelAnimationFrame(frame);
       element?.removeEventListener("mousemove", handleMove);
     };
   }, []);
 
-  const spotlightStyle = {
-    left: `${cursor.x}%`,
-    top: `${cursor.y}%`,
-    transform: "translate(-50%, -50%)",
-  };
+  useEffect(() => {
+    const updateViewportState = () => setIsMobile(window.innerWidth < 640);
+    updateViewportState();
+    window.addEventListener("resize", updateViewportState);
+    return () => window.removeEventListener("resize", updateViewportState);
+  }, []);
 
   const radius = isMobile ? 34 : 42;
 
@@ -87,6 +95,40 @@ export function HeroCinematic() {
     >
       <div className="absolute inset-0 bg-background/95" aria-hidden />
 
+      {/* Floating controls: brand name, language switcher, theme toggle */}
+      <div className="absolute inset-x-0 top-0 z-50 flex items-center justify-between px-4 py-4 sm:px-8">
+        <Link href="/" className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground sm:text-sm">
+          {profileData.name}
+        </Link>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            {(["en", "fr", "ar"] as const).map((lng) => (
+              <button
+                key={lng}
+                type="button"
+                onClick={() => setLocale(lng)}
+                className={`h-8 w-8 rounded-full text-xs uppercase transition ${
+                  locale === lng
+                    ? "border border-cyan-400/50 bg-cyan-500/20 text-cyan-600 dark:text-cyan-300"
+                    : "bg-muted/50 text-muted-foreground hover:bg-muted"
+                }`}
+                aria-label={lng === "en" ? "English" : lng === "fr" ? "French" : "Arabic"}
+              >
+                {lng}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="rounded-full border border-border/70 bg-background/70 p-2 text-foreground transition hover:border-cyan-400/60"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+        </div>
+      </div>
+
       <div className="absolute inset-0 opacity-0 sm:opacity-100" aria-hidden="true">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.14),transparent_24%),radial-gradient(circle_at_85%_30%,rgba(168,85,247,0.18),transparent_20%)] dark:bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.14),transparent_24%),radial-gradient(circle_at_85%_30%,rgba(168,85,247,0.18),transparent_20%)] light:bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.1),transparent_24%),radial-gradient(circle_at_85%_30%,rgba(168,85,247,0.12),transparent_20%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),transparent_60%)] dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.06),transparent_60%)] light:bg-[linear-gradient(180deg,rgba(0,0,0,0.04),transparent_60%)]" />
@@ -96,24 +138,24 @@ export function HeroCinematic() {
       </div>
 
           <div className="absolute inset-0 pointer-events-none">
-        {particles.map((particle) => {
-          const x = particle.x + (cursor.x - 50) * 0.04;
-          const y = particle.y + (cursor.y - 50) * 0.04;
-          return (
-            <span
-              key={particle.id}
-              className="absolute block rounded-full bg-cyan-300/20 blur-sm dark:bg-cyan-300/20 light:bg-cyan-500/25"
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                width: `${particle.size * 2}px`,
-                height: `${particle.size * 2}px`,
-                transform: `translate(-50%, -50%) rotate(${particle.angle}rad)`,
-              }}
-            />
-          );
-        })}
-        <div style={spotlightStyle} className="absolute h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/5 blur-3xl dark:bg-white/5 light:bg-black/5" />
+        {particles.map((particle) => (
+          <span
+            key={particle.id}
+            className="absolute block rounded-full bg-cyan-300/20 blur-sm dark:bg-cyan-300/20 light:bg-cyan-500/25"
+            style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              width: `${particle.size * 2}px`,
+              height: `${particle.size * 2}px`,
+              transform: `translate(-50%, -50%) rotate(${particle.angle}rad)`,
+            }}
+          />
+        ))}
+        <div
+          ref={spotlightRef}
+          style={{ left: "50%", top: "50%" }}
+          className="absolute h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/5 blur-3xl dark:bg-white/5 light:bg-black/5"
+        />
       </div>
 
         <div className="relative z-10 flex w-full flex-1 flex-col items-center justify-start text-center sm:justify-center">

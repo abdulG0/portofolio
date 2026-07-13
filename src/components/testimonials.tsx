@@ -1,8 +1,6 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { testimonialsData } from "@/data/testimonials";
+import { Reveal } from "@/components/reveal";
 
 export function Testimonials() {
   return (
@@ -15,12 +13,9 @@ export function Testimonials() {
 
         <div className="grid gap-6 md:grid-cols-3">
           {testimonialsData.map((testimonial, index) => (
-            <motion.div
+            <Reveal
               key={index}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              delay={index * 0.1}
               className="rounded-[28px] border border-border bg-card p-6"
             >
               <div className="flex gap-1 mb-4">
@@ -33,7 +28,7 @@ export function Testimonials() {
                 <p className="font-semibold text-foreground">{testimonial.name}</p>
                 <p className="text-sm text-muted-foreground">{testimonial.title}, {testimonial.company}</p>
               </div>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
       </div>

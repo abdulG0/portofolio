@@ -1,8 +1,6 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { Reveal } from "@/components/reveal";
 
 type ProjectCardProps = {
   title: string;
@@ -15,14 +13,7 @@ type ProjectCardProps = {
 
 export function ProjectCard({ title, description, technologies, github, liveDemo, image }: ProjectCardProps) {
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 24, scale: 0.99 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -6, scale: 1.01 }}
-      className="group rounded-[28px] border border-border bg-card shadow-none"
-    >
+    <Reveal className="group rounded-[28px] border border-border bg-card shadow-none transition-transform duration-300 hover:-translate-y-1.5">
       <div className="overflow-hidden rounded-[28px] bg-card/70 transition duration-300 group-hover:bg-card/85">
         {image && (
           <div className="relative h-48 w-full overflow-hidden">
@@ -30,6 +21,7 @@ export function ProjectCard({ title, description, technologies, github, liveDemo
                 src={image}
                 alt={title}
                 fill
+                sizes="(max-width: 768px) 100vw, 33vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 unoptimized
               />
@@ -65,6 +57,6 @@ export function ProjectCard({ title, description, technologies, github, liveDemo
           </div>
         </div>
       </div>
-    </motion.article>
+    </Reveal>
   );
 }
