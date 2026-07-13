@@ -1,12 +1,9 @@
 export const contactData = {
-  email: "contact@example.com",
-  phone: "+1 (555) 123-4567",
-  location: "San Francisco, CA",
+  email: "abdullahsokhona@icloud.com",
+  phone: "+22249075478",
+  location: "Nouakchoot, MR",
   socials: [
-    { name: "LinkedIn", url: "#", icon: "🔗" },
-    { name: "GitHub", url: "#", icon: "💻" },
-    { name: "X", url: "#", icon: "🐦" },
-    { name: "WhatsApp", url: "#", icon: "💬" },
-    { name: "Calendly", url: "#", icon: "📅" },
+    { name: "GitHub", https://github.com/abdulG0 : "#", icon: "💻" },
+    { name: "WhatsApp", https://wa.me/22249075478?text=Hello%20I%20would%20like%20to%20contact%20you.: "#", icon: "💬" },
   ],
 };
