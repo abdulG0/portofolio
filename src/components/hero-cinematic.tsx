@@ -36,9 +36,9 @@ function randomParticle(seed: number): Particle {
 }
 
 export function HeroCinematic() {
-  const [cursor, setCursor] = useState({ x: 50, y: 50 });
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const spotlightRef = useRef<HTMLDivElement | null>(null);
   const { t, setLocale, locale } = useTranslation();
   const { theme, toggleTheme } = useTheme();
 
@@ -49,34 +49,42 @@ export function HeroCinematic() {
   );
 
   useEffect(() => {
-    const handleMove = (event: MouseEvent) => {
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return;
+    // Skip pointer effects on touch / small screens where they aren't visible.
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+      return;
+    }
 
-      setCursor({
-        x: ((event.clientX - rect.left) / rect.width) * 100,
-        y: ((event.clientY - rect.top) / rect.height) * 100,
+    let frame = 0;
+    const handleMove = (event: MouseEvent) => {
+      if (frame) return;
+      // Throttle to one update per animation frame and write directly to the
+      // DOM (no React re-render) to keep interactions smooth.
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const rect = containerRef.current?.getBoundingClientRect();
+        const spotlight = spotlightRef.current;
+        if (!rect || !spotlight) return;
+        const x = ((event.clientX - rect.left) / rect.width) * 100;
+        const y = ((event.clientY - rect.top) / rect.height) * 100;
+        spotlight.style.left = `${x}%`;
+        spotlight.style.top = `${y}%`;
       });
     };
 
-    const updateViewportState = () => setIsMobile(window.innerWidth < 640);
-
-    updateViewportState();
-    window.addEventListener("resize", updateViewportState);
-
     const element = containerRef.current;
-    element?.addEventListener("mousemove", handleMove);
+    element?.addEventListener("mousemove", handleMove, { passive: true });
     return () => {
-      window.removeEventListener("resize", updateViewportState);
+      if (frame) cancelAnimationFrame(frame);
       element?.removeEventListener("mousemove", handleMove);
     };
   }, []);
 
-  const spotlightStyle = {
-    left: `${cursor.x}%`,
-    top: `${cursor.y}%`,
-    transform: "translate(-50%, -50%)",
-  };
+  useEffect(() => {
+    const updateViewportState = () => setIsMobile(window.innerWidth < 640);
+    updateViewportState();
+    window.addEventListener("resize", updateViewportState);
+    return () => window.removeEventListener("resize", updateViewportState);
+  }, []);
 
   const radius = isMobile ? 34 : 42;
 
@@ -130,24 +138,24 @@ export function HeroCinematic() {
       </div>
 
           <div className="absolute inset-0 pointer-events-none">
-        {particles.map((particle) => {
-          const x = particle.x + (cursor.x - 50) * 0.04;
-          const y = particle.y + (cursor.y - 50) * 0.04;
-          return (
-            <span
-              key={particle.id}
-              className="absolute block rounded-full bg-cyan-300/20 blur-sm dark:bg-cyan-300/20 light:bg-cyan-500/25"
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                width: `${particle.size * 2}px`,
-                height: `${particle.size * 2}px`,
-                transform: `translate(-50%, -50%) rotate(${particle.angle}rad)`,
-              }}
-            />
-          );
-        })}
-        <div style={spotlightStyle} className="absolute h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/5 blur-3xl dark:bg-white/5 light:bg-black/5" />
+        {particles.map((particle) => (
+          <span
+            key={particle.id}
+            className="absolute block rounded-full bg-cyan-300/20 blur-sm dark:bg-cyan-300/20 light:bg-cyan-500/25"
+            style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              width: `${particle.size * 2}px`,
+              height: `${particle.size * 2}px`,
+              transform: `translate(-50%, -50%) rotate(${particle.angle}rad)`,
+            }}
+          />
+        ))}
+        <div
+          ref={spotlightRef}
+          style={{ left: "50%", top: "50%" }}
+          className="absolute h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/5 blur-3xl dark:bg-white/5 light:bg-black/5"
+        />
       </div>
 
         <div className="relative z-10 flex w-full flex-1 flex-col items-center justify-start text-center sm:justify-center">
