@@ -7,8 +7,20 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Elite Portfolio",
-  description: "Award-level personal CV and portfolio website",
+  title: {
+    default: "Abdullah Sokhona — Portfolio",
+    template: "%s | Abdullah Sokhona",
+  },
+  description:
+    "Abdullah Sokhona — Full-Stack Developer, AI Engineer, and Systems Integrator. Personal CV and portfolio website.",
+  authors: [{ name: "Abdullah Sokhona" }],
+  creator: "Abdullah Sokhona",
+  openGraph: {
+    title: "Abdullah Sokhona — Portfolio",
+    description:
+      "Full-Stack Developer, AI Engineer, and Systems Integrator building end-to-end technology solutions.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

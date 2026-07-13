@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { profileData } from "@/data/profile";
 import { useTranslation } from "@/i18n/LanguageProvider";
 import { useTheme } from "@/components/theme-provider";
-import { Home, User, Briefcase, Grid, FileText, Mail } from "lucide-react";
+import { Home, User, Briefcase, Grid, FileText, Mail, Moon, Sun } from "lucide-react";
 
 type Particle = {
   id: number;
@@ -86,6 +86,40 @@ export function HeroCinematic() {
       className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-background px-4 py-3 sm:min-h-screen sm:px-8 sm:py-6"
     >
       <div className="absolute inset-0 bg-background/95" aria-hidden />
+
+      {/* Floating controls: brand name, language switcher, theme toggle */}
+      <div className="absolute inset-x-0 top-0 z-50 flex items-center justify-between px-4 py-4 sm:px-8">
+        <Link href="/" className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground sm:text-sm">
+          {profileData.name}
+        </Link>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            {(["en", "fr", "ar"] as const).map((lng) => (
+              <button
+                key={lng}
+                type="button"
+                onClick={() => setLocale(lng)}
+                className={`h-8 w-8 rounded-full text-xs uppercase transition ${
+                  locale === lng
+                    ? "border border-cyan-400/50 bg-cyan-500/20 text-cyan-600 dark:text-cyan-300"
+                    : "bg-muted/50 text-muted-foreground hover:bg-muted"
+                }`}
+                aria-label={lng === "en" ? "English" : lng === "fr" ? "French" : "Arabic"}
+              >
+                {lng}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="rounded-full border border-border/70 bg-background/70 p-2 text-foreground transition hover:border-cyan-400/60"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+        </div>
+      </div>
 
       <div className="absolute inset-0 opacity-0 sm:opacity-100" aria-hidden="true">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.14),transparent_24%),radial-gradient(circle_at_85%_30%,rgba(168,85,247,0.18),transparent_20%)] dark:bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.14),transparent_24%),radial-gradient(circle_at_85%_30%,rgba(168,85,247,0.18),transparent_20%)] light:bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.1),transparent_24%),radial-gradient(circle_at_85%_30%,rgba(168,85,247,0.12),transparent_20%)]" />
