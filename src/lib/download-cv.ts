@@ -227,7 +227,7 @@ export async function downloadCvPdf() {
   addSectionTitle(t("cv.skills") || "Skills");
   highlightedSkills.forEach((category) => {
     const translatedCategoryName = t(`skills.categories.${skillsData.categories.indexOf(category)}.name`) || category.name;
-    const skillNames = category.skills;
+    const skillNames = category.skills.map((skill) => skill.name);
     ensureSpace(12);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(9.5);
