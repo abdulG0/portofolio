@@ -152,7 +152,7 @@ export async function downloadCvPdf() {
   // ---- Build document --------------------------------------------------
   drawHeader();
 
-  addSectionTitle(t("cv.profile") || "Profile");
+  addSectionTitle(t("cv.summary") || "Professional Summary");
   addBodyText(t("profile.bio") || profileData.bio, { color: [71, 85, 105], gap: 6 });
 
   addSectionTitle(t("cv.experience") || "Experience");
