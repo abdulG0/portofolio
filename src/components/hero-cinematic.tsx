@@ -92,9 +92,21 @@ export function HeroCinematic() {
   // and after a frame to reliably win against Next.js scroll restoration.
   useEffect(() => {
     const reset = () => window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+    // Reset immediately, then over the next few frames to reliably override
+    // Next.js scroll restoration (which can run after this effect on back/fwd nav).
     reset();
-    const raf = requestAnimationFrame(reset);
-    return () => cancelAnimationFrame(raf);
+    let count = 0;
+    let raf = 0;
+    const loop = () => {
+      reset();
+      if (++count < 5) raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    window.addEventListener("pageshow", reset);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pageshow", reset);
+    };
   }, []);
 
   const radius = isMobile ? 34 : 42;
@@ -172,9 +184,13 @@ export function HeroCinematic() {
         <div className="relative z-10 flex w-full flex-1 flex-col items-center justify-start text-center sm:justify-center">
           <div className="flex flex-1 w-full max-w-5xl items-center justify-center py-4 sm:py-0">
             <div className="relative mx-auto h-[min(82vw,520px)] w-[min(82vw,520px)] sm:h-[520px] sm:w-[520px]">
-            <div className="absolute inset-0 rounded-full border border-cyan-300/12 bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.02),transparent_40%)] dark:border-cyan-300/12 dark:bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.02),transparent_40%)] light:border-cyan-400/20 light:bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.03),transparent_40%)]" />
-            <div className="absolute inset-12 rounded-full border border-cyan-300/10 opacity-60 dark:border-cyan-300/10 light:border-cyan-400/15" />
-            <div className="absolute inset-28 rounded-full border border-white/6 opacity-40 dark:border-white/6 light:border-black/10" />
+            <div className="pointer-events-none absolute inset-0 rounded-full border border-cyan-300/12 bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.02),transparent_40%)] dark:border-cyan-300/12 dark:bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.02),transparent_40%)] light:border-cyan-400/20 light:bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.03),transparent_40%)]" />
+            {/* Spinning decorative rings (visual only; nav nodes stay static & clickable) */}
+            <div className="pointer-events-none absolute inset-0 animate-spin-slow rounded-full border border-transparent border-t-cyan-400/50 border-r-cyan-400/20">
+              <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.9)]" />
+            </div>
+            <div className="pointer-events-none absolute inset-12 animate-spin-slow rounded-full border border-cyan-300/10 opacity-60 [animation-direction:reverse] [animation-duration:32s] dark:border-cyan-300/10 light:border-cyan-400/15" />
+            <div className="pointer-events-none absolute inset-28 animate-spin-slow rounded-full border border-transparent border-b-white/25 opacity-50 [animation-duration:26s] dark:border-b-white/25 light:border-b-black/20" />
 
               <div className="absolute inset-0 flex items-center justify-center">
                 <Link
