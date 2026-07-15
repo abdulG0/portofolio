@@ -31,14 +31,17 @@ export async function downloadCvPdf() {
   let y = 0;
 
   const locale = getStoredLocale() || "en";
+  // Returns undefined (not the key path) when a translation is missing,
+  // so `t(...) || fallback` reliably falls back to the raw data instead of
+  // printing keys like "skills.categories.3.skills.4" in the PDF.
   const t = (path: string) => {
     const parts = path.split(".");
     let cur: any = translations[locale] || translations.en;
     for (const p of parts) {
-      if (!cur) return path;
+      if (cur == null) return undefined;
       cur = cur[p];
     }
-    return cur ?? path;
+    return cur;
   };
 
   const setColor = (rgb: readonly [number, number, number] | readonly number[]) =>
