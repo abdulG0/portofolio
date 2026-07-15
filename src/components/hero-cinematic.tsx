@@ -185,12 +185,8 @@ export function HeroCinematic() {
           <div className="flex flex-1 w-full max-w-5xl items-center justify-center py-4 sm:py-0">
             <div className="relative mx-auto h-[min(82vw,520px)] w-[min(82vw,520px)] sm:h-[520px] sm:w-[520px]">
             <div className="pointer-events-none absolute inset-0 rounded-full border border-cyan-300/12 bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.02),transparent_40%)] dark:border-cyan-300/12 dark:bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.02),transparent_40%)] light:border-cyan-400/20 light:bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.03),transparent_40%)]" />
-            {/* Spinning decorative rings (visual only; nav nodes stay static & clickable) */}
-            <div className="pointer-events-none absolute inset-0 animate-spin-slow rounded-full border border-transparent border-t-cyan-400/50 border-r-cyan-400/20">
-              <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.9)]" />
-            </div>
-            <div className="pointer-events-none absolute inset-12 animate-spin-slow rounded-full border border-cyan-300/10 opacity-60 [animation-direction:reverse] [animation-duration:32s] dark:border-cyan-300/10 light:border-cyan-400/15" />
-            <div className="pointer-events-none absolute inset-28 animate-spin-slow rounded-full border border-transparent border-b-white/25 opacity-50 [animation-duration:26s] dark:border-b-white/25 light:border-b-black/20" />
+            <div className="pointer-events-none absolute inset-12 rounded-full border border-cyan-300/10 opacity-60 dark:border-cyan-300/10 light:border-cyan-400/15" />
+            <div className="pointer-events-none absolute inset-28 rounded-full border border-white/6 opacity-40 dark:border-white/6 light:border-black/10" />
 
               <div className="absolute inset-0 flex items-center justify-center">
                 <Link
@@ -213,6 +209,7 @@ export function HeroCinematic() {
                     const radiusPercent = radius; // percent radius
                     const cx = 50 + Math.cos(angle) * radiusPercent;
                     const cy = 50 + Math.sin(angle) * radiusPercent;
+                    const deg = (angle * 180) / Math.PI;
                     return (
                       <Link
                         key={item.href}
@@ -221,15 +218,11 @@ export function HeroCinematic() {
                         className="absolute pointer-events-auto z-40"
                         style={{ top: `${cy}%`, left: `${cx}%`, transform: "translate(-50%, -50%)" }}
                       >
-                        {/* Counter-spin at the same speed so icons/labels stay upright while orbiting */}
-                        <div
-                          className="flex animate-spin-slow flex-col items-center [animation-direction:reverse]"
-                          style={{ animationDuration: "28s" }}
-                        >
-                          <div className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card/85 shadow-[0_12px_24px_rgba(0,0,0,0.15)] transition hover:scale-110 hover:border-cyan-400/40 hover:bg-cyan-500/10 dark:hover:bg-cyan-300/12 pointer-events-auto sm:h-14 sm:w-14">
+                        <div style={{ transform: `rotate(${-deg}deg)` }} className="flex flex-col items-center">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card/85 shadow-[0_12px_24px_rgba(0,0,0,0.15)] transition hover:border-cyan-400/40 hover:bg-cyan-500/10 dark:hover:bg-cyan-300/12 pointer-events-auto sm:h-14 sm:w-14">
                             <Icon className="h-5 w-5 text-cyan-500 dark:text-cyan-200 sm:h-6 sm:w-6" aria-hidden />
                           </div>
-                          <span className="mt-2 block text-[10px] text-muted-foreground sm:text-xs">{t(`nav.${item.key}`)}</span>
+                          <span style={{ transform: `rotate(${deg}deg)` }} className="mt-2 block origin-center text-[10px] text-muted-foreground sm:text-xs">{t(`nav.${item.key}`)}</span>
                         </div>
                       </Link>
                     );
