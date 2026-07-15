@@ -86,6 +86,17 @@ export function HeroCinematic() {
     return () => window.removeEventListener("resize", updateViewportState);
   }, []);
 
+  // The home hero is the landing hub and should always be framed from the top.
+  // On client navigation back to home, Next.js may restore a previous scroll
+  // position, so reset to the top when the hero mounts. We reset both on mount
+  // and after a frame to reliably win against Next.js scroll restoration.
+  useEffect(() => {
+    const reset = () => window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+    reset();
+    const raf = requestAnimationFrame(reset);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   const radius = isMobile ? 34 : 42;
 
   return (
