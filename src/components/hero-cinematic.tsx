@@ -166,10 +166,15 @@ export function HeroCinematic() {
             <div className="absolute inset-28 rounded-full border border-white/6 opacity-40 dark:border-white/6 light:border-black/10" />
 
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="rounded-full border border-border bg-card/92 px-5 py-4 text-center shadow-[0_0_120px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:px-8 sm:py-6">
+                <Link
+                  href="/cv"
+                  aria-label={`${t("profile.name")} — ${t("nav.cv")}`}
+                  className="group pointer-events-auto z-40 rounded-full border border-border bg-card/92 px-5 py-4 text-center shadow-[0_0_120px_rgba(0,0,0,0.2)] backdrop-blur-xl transition hover:border-cyan-400/50 hover:bg-cyan-500/5 sm:px-8 sm:py-6"
+                >
                   <p className="text-[10px] uppercase tracking-[0.28em] text-cyan-500/70 dark:text-cyan-300/70 sm:text-xs">{t("hero.navigationHub")}</p>
-                  <h2 className="mt-1 text-base font-semibold text-foreground sm:text-xl">{t("profile.name")}</h2>
-                </div>
+                  <h2 className="mt-1 text-base font-semibold text-foreground transition group-hover:text-cyan-500 dark:group-hover:text-cyan-300 sm:text-xl">{t("profile.name")}</h2>
+                  <span className="mt-1 block text-[9px] uppercase tracking-[0.24em] text-muted-foreground opacity-0 transition group-hover:opacity-100 sm:text-[10px]">{t("nav.cv")}</span>
+                </Link>
               </div>
 
             <div className="absolute inset-0">
