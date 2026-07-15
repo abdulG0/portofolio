@@ -179,14 +179,13 @@ export function HeroCinematic() {
 
             <div className="absolute inset-0">
               <div className="relative h-full w-full">
-                <div className="absolute inset-0 animate-spin-slow" style={{ animationDuration: "28s" }}>
+                <div className="absolute inset-0">
                   {navItems.map((item, idx) => {
                     const Icon = [Home, User, Briefcase, Grid, FileText, Mail][idx] || Home;
                     const angle = (idx / navItems.length) * Math.PI * 2 - Math.PI / 2; // start at top
                     const radiusPercent = radius; // percent radius
                     const cx = 50 + Math.cos(angle) * radiusPercent;
                     const cy = 50 + Math.sin(angle) * radiusPercent;
-                    const deg = (angle * 180) / Math.PI;
                     return (
                       <Link
                         key={item.href}
@@ -195,11 +194,11 @@ export function HeroCinematic() {
                         className="absolute pointer-events-auto z-40"
                         style={{ top: `${cy}%`, left: `${cx}%`, transform: "translate(-50%, -50%)" }}
                       >
-                        <div style={{ transform: `rotate(${ -deg }deg)` }} className="flex flex-col items-center">
-                          <div className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card/85 shadow-[0_12px_24px_rgba(0,0,0,0.15)] transition hover:border-cyan-400/40 hover:bg-cyan-500/10 dark:hover:bg-cyan-300/12 pointer-events-auto sm:h-14 sm:w-14">
+                        <div className="flex flex-col items-center">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card/85 shadow-[0_12px_24px_rgba(0,0,0,0.15)] transition hover:scale-110 hover:border-cyan-400/40 hover:bg-cyan-500/10 dark:hover:bg-cyan-300/12 pointer-events-auto sm:h-14 sm:w-14">
                             <Icon className="h-5 w-5 text-cyan-500 dark:text-cyan-200 sm:h-6 sm:w-6" aria-hidden />
                           </div>
-                          <span style={{ transform: `rotate(${deg}deg)` }} className="mt-2 block origin-center text-[10px] text-muted-foreground sm:text-xs">{t(`nav.${item.key}`)}</span>
+                          <span className="mt-2 block text-[10px] text-muted-foreground sm:text-xs">{t(`nav.${item.key}`)}</span>
                         </div>
                       </Link>
                     );
