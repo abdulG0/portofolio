@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import LanguageRoot from "@/components/language-root";
+import { NavigationSync } from "@/components/navigation-sync";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,9 +30,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" data-scroll-behavior="smooth">
       <body className={inter.className}>
         <ThemeProvider>
+          <NavigationSync />
           <LanguageRoot>{children}</LanguageRoot>
         </ThemeProvider>
       </body>

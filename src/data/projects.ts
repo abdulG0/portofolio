@@ -7,7 +7,7 @@ export const projectsData = [
     technologies: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind CSS", "Cloud"],
     github: "https://github.com/your-username/darhum",
     liveDemo: "https://darhum.com",
-    image: "https://coresg-normal.trae.ai/api/v1/text_to_image?prompt=modern%20real%20estate%20rental%20marketplace%20website%20interface%20with%20property%20listings%2C%20clean%20design&image_size=landscape_16_9",
+    image: "/images/projects/darhum.jpg",
     results: [
       "Built complete authentication system",
       "Developed property management backend",
@@ -23,7 +23,7 @@ export const projectsData = [
     technologies: ["React", "Node.js", "MongoDB", "Rich Text Editor", "Responsive Design"],
     github: "https://github.com/your-username/bloglaunch",
     liveDemo: "https://bloglaunch.net",
-    image: "https://coresg-normal.trae.ai/api/v1/text_to_image?prompt=modern%20blogging%20platform%20interface%20with%20content%20editor%20dashboard%2C%20clean%20UI%20design&image_size=landscape_16_9",
+    image: "/images/projects/bloglaunch.png",
     results: [
       "Built CMS with rich text editing",
       "Implemented user authentication and profile management",
@@ -39,7 +39,7 @@ export const projectsData = [
     technologies: ["Python", "AI/ML", "Next.js", "FastAPI", "Patient Triage"],
     github: "https://github.com/your-username/ai-precheck",
     liveDemo: "https://ai-precheck.com",
-    image: "https://coresg-normal.trae.ai/api/v1/text_to_image?prompt=AI%20healthcare%20pre-assessment%20platform%20interface%20with%20symptom%20intake%20form%2C%20medical%20theme&image_size=landscape_16_9",
+    image: "/images/projects/ai-precheck.png",
     results: [
       "Designed conversational AI symptom intake system",
       "Implemented secure patient data handling",

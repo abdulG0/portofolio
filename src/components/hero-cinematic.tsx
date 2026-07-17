@@ -86,6 +86,29 @@ export function HeroCinematic() {
     return () => window.removeEventListener("resize", updateViewportState);
   }, []);
 
+  // The home hero is the landing hub and should always be framed from the top.
+  // On client navigation back to home, Next.js may restore a previous scroll
+  // position, so reset to the top when the hero mounts. We reset both on mount
+  // and after a frame to reliably win against Next.js scroll restoration.
+  useEffect(() => {
+    const reset = () => window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+    // Reset immediately, then over the next few frames to reliably override
+    // Next.js scroll restoration (which can run after this effect on back/fwd nav).
+    reset();
+    let count = 0;
+    let raf = 0;
+    const loop = () => {
+      reset();
+      if (++count < 5) raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    window.addEventListener("pageshow", reset);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pageshow", reset);
+    };
+  }, []);
+
   const radius = isMobile ? 34 : 42;
 
   return (
@@ -161,15 +184,20 @@ export function HeroCinematic() {
         <div className="relative z-10 flex w-full flex-1 flex-col items-center justify-start text-center sm:justify-center">
           <div className="flex flex-1 w-full max-w-5xl items-center justify-center py-4 sm:py-0">
             <div className="relative mx-auto h-[min(82vw,520px)] w-[min(82vw,520px)] sm:h-[520px] sm:w-[520px]">
-            <div className="absolute inset-0 rounded-full border border-cyan-300/12 bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.02),transparent_40%)] dark:border-cyan-300/12 dark:bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.02),transparent_40%)] light:border-cyan-400/20 light:bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.03),transparent_40%)]" />
-            <div className="absolute inset-12 rounded-full border border-cyan-300/10 opacity-60 dark:border-cyan-300/10 light:border-cyan-400/15" />
-            <div className="absolute inset-28 rounded-full border border-white/6 opacity-40 dark:border-white/6 light:border-black/10" />
+            <div className="pointer-events-none absolute inset-0 rounded-full border border-cyan-300/12 bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.02),transparent_40%)] dark:border-cyan-300/12 dark:bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.02),transparent_40%)] light:border-cyan-400/20 light:bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.03),transparent_40%)]" />
+            <div className="pointer-events-none absolute inset-12 rounded-full border border-cyan-300/10 opacity-60 dark:border-cyan-300/10 light:border-cyan-400/15" />
+            <div className="pointer-events-none absolute inset-28 rounded-full border border-white/6 opacity-40 dark:border-white/6 light:border-black/10" />
 
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="rounded-full border border-border bg-card/92 px-5 py-4 text-center shadow-[0_0_120px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:px-8 sm:py-6">
+                <Link
+                  href="/cv"
+                  aria-label={`${t("profile.name")} — ${t("nav.cv")}`}
+                  className="group pointer-events-auto z-40 rounded-full border border-border bg-card/92 px-5 py-4 text-center shadow-[0_0_120px_rgba(0,0,0,0.2)] backdrop-blur-xl transition hover:border-cyan-400/50 hover:bg-cyan-500/5 sm:px-8 sm:py-6"
+                >
                   <p className="text-[10px] uppercase tracking-[0.28em] text-cyan-500/70 dark:text-cyan-300/70 sm:text-xs">{t("hero.navigationHub")}</p>
-                  <h2 className="mt-1 text-base font-semibold text-foreground sm:text-xl">{t("profile.name")}</h2>
-                </div>
+                  <h2 className="mt-1 text-base font-semibold text-foreground transition group-hover:text-cyan-500 dark:group-hover:text-cyan-300 sm:text-xl">{t("profile.name")}</h2>
+                  <span className="mt-1 block text-[9px] uppercase tracking-[0.24em] text-muted-foreground opacity-0 transition group-hover:opacity-100 sm:text-[10px]">{t("nav.cv")}</span>
+                </Link>
               </div>
 
             <div className="absolute inset-0">
@@ -190,7 +218,7 @@ export function HeroCinematic() {
                         className="absolute pointer-events-auto z-40"
                         style={{ top: `${cy}%`, left: `${cx}%`, transform: "translate(-50%, -50%)" }}
                       >
-                        <div style={{ transform: `rotate(${ -deg }deg)` }} className="flex flex-col items-center">
+                        <div style={{ transform: `rotate(${-deg}deg)` }} className="flex flex-col items-center">
                           <div className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card/85 shadow-[0_12px_24px_rgba(0,0,0,0.15)] transition hover:border-cyan-400/40 hover:bg-cyan-500/10 dark:hover:bg-cyan-300/12 pointer-events-auto sm:h-14 sm:w-14">
                             <Icon className="h-5 w-5 text-cyan-500 dark:text-cyan-200 sm:h-6 sm:w-6" aria-hidden />
                           </div>
