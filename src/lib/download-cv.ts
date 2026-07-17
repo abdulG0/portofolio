@@ -211,7 +211,7 @@ export async function downloadCvPdf() {
   // ---- Build document --------------------------------------------------
   drawHeader();
 
-  addSectionTitle(t("cv.profile") || "Profile");
+  addSectionTitle(t("cv.summary") || "Professional Summary");
   addBodyText(t("profile.bio") || profileData.bio, { color: [71, 85, 105], gap: 6 });
 
   addSectionTitle(t("cv.experience") || "Experience");
@@ -285,18 +285,15 @@ export async function downloadCvPdf() {
 
   addSectionTitle(t("cv.skills") || "Skills");
   highlightedSkills.forEach((category) => {
-    const catIndex = skillsData.categories.findIndex((c) => c.name === category.name);
-    const catName = (t(`skills.categories.${catIndex}.name`) as string) || category.name;
-    const skillNamesArr = category.skills.map(
-      (skill, si) => (t(`skills.categories.${catIndex}.skills.${si}`) as string) || skill.name
-    );
+    const translatedCategoryName = t(`skills.categories.${skillsData.categories.indexOf(category)}.name`) || category.name;
+    const skillNames = category.skills.map((skill) => skill.name);
     ensureSpace(12);
     setF("bold");
     doc.setFontSize(9.5);
     setColor(INK);
-    doc.text(catName, startX(), y, { align: mainAlign });
+    doc.text(translatedCategoryName, startX(), y, { align: mainAlign });
     y += 4.5;
-    addPills(skillNamesArr);
+    addPills(skillNames);
     y += 1.5;
   });
 
