@@ -108,12 +108,29 @@ export async function downloadCvPdf() {
     doc.setTextColor(125, 211, 252); // cyan-300
     doc.text(t("profile.title") || profileData.title, startX(), 31, { align: mainAlign });
 
-    // contact line (LTR data: email/phone stay readable in both directions)
+    // contact line with website and social links
     doc.setFontSize(9.5);
     doc.setTextColor(203, 213, 225); // slate-300
-    const contactLine = [contactData.email, contactData.phone, contactData.location]
-      .filter(Boolean)
-      .join("   •   ");
+    const contactParts = [
+      contactData.email,
+      contactData.phone,
+      contactData.location,
+      contactData.website && `Web: ${contactData.website.replace(/^https?:\/\//, "")}`,
+    ]
+      .filter(Boolean);
+    
+    // Add social links as inline text
+    if (contactData.socials?.length) {
+      contactData.socials.forEach((social) => {
+        const displayUrl = social.url
+          .replace(/^https?:\/\//, "")
+          .replace(/\?.*$/, "")
+          .replace(/\/$/, "");
+        contactParts.push(social.name);
+      });
+    }
+    
+    const contactLine = contactParts.join("   •   ");
     doc.text(contactLine, startX(), 40, { align: mainAlign });
 
     y = 58;

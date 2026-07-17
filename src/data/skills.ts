@@ -8,6 +8,9 @@ export const skillsData = {
         { name: "React", proficiency: 92 },
         { name: "Node.js", proficiency: 88 },
         { name: "Python", proficiency: 85 },
+        { name: "Vite", proficiency: 88 },
+        { name: "Expo", proficiency: 85 },
+        { name: "Swift", proficiency: 82 },
         { name: "Database Design", proficiency: 87 },
         { name: "API Development", proficiency: 90 },
       ],
@@ -39,6 +42,7 @@ export const skillsData = {
         { name: "CI/CD", proficiency: 80 },
         { name: "Security", proficiency: 84 },
         { name: "Performance Monitoring", proficiency: 83 },
+        { name: "Ubuntu", proficiency: 87 },
       ],
     },
     {
