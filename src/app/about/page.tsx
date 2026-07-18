@@ -83,6 +83,17 @@ export default function AboutPage() {
       </section>
 
       <Testimonials />
+
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <div className="flex justify-center">
+          <Link
+            href="/consultation"
+            className="inline-block rounded-full border border-cyan-400/50 bg-cyan-500/10 px-8 py-3 text-sm font-medium text-cyan-600 transition hover:bg-cyan-500/20 dark:text-cyan-300 dark:hover:bg-cyan-500/30"
+          >
+            Let's work together — Book a Consultation
+          </Link>
+        </div>
+      </section>
     </SiteShell>
   );
 }
