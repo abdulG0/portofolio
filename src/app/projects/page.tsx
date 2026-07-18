@@ -69,9 +69,6 @@ export default function ProjectsPage() {
                     </div>
 
                     <div className="mt-8 flex flex-wrap gap-3">
-                      <Button asChild variant="outline">
-                        <Link href={project.github}>{t("projects.github") || "GitHub"}</Link>
-                      </Button>
                       <Button asChild>
                         <Link href={project.liveDemo}>{t("projects.liveDemo") || "Live Demo"}</Link>
                       </Button>
