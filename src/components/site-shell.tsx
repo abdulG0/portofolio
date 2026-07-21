@@ -49,6 +49,7 @@ function InnerShell({ children, hideHeader = false }: SiteShellProps) {
               <Link href="/projects" className="text-sm text-muted-foreground transition hover:text-foreground">{t("nav.projects")}</Link>
               <Link href="/cv" className="text-sm text-muted-foreground transition hover:text-foreground">{t("nav.cv")}</Link>
               <Link href="/contact" className="text-sm text-muted-foreground transition hover:text-foreground">{t("nav.contact")}</Link>
+              <Link href="/consultation" className="text-sm text-cyan-600 font-medium transition hover:text-cyan-500 dark:text-cyan-300 dark:hover:text-cyan-200">Book a Consultation</Link>
             </nav>
             <button
               type="button"
@@ -138,6 +139,13 @@ function InnerShell({ children, hideHeader = false }: SiteShellProps) {
                 >
                   {t("nav.contact")}
                 </Link>
+                <Link
+                  href="/consultation"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-sm text-cyan-600 font-medium transition hover:text-cyan-500 dark:text-cyan-300 dark:hover:text-cyan-200"
+                >
+                  Book a Consultation
+                </Link>
               </nav>
               <div className="flex items-center gap-2 pt-3 border-t border-border/50">
                 <button
@@ -170,14 +178,22 @@ function InnerShell({ children, hideHeader = false }: SiteShellProps) {
       <main>{children}</main>
 
       <footer className="border-t border-border/60 bg-background/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <span className="h-2.5 w-2.5 rounded-full bg-cyan-400/80 shadow-[0_0_12px_rgba(34,211,238,0.7)]" />
-            <p>
-              © {new Date().getFullYear()} {t("profile.name")}
-            </p>
+        <div className="mx-auto max-w-6xl px-6 py-8">
+          <div className="mb-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:justify-between">
+            <div className="flex items-center gap-3">
+              <span className="h-2.5 w-2.5 rounded-full bg-cyan-400/80 shadow-[0_0_12px_rgba(34,211,238,0.7)]" />
+              <p className="text-sm text-muted-foreground">
+                © {new Date().getFullYear()} {t("profile.name")}
+              </p>
+            </div>
+            <Link
+              href="/consultation"
+              className="inline-block rounded-full border border-cyan-400/50 bg-cyan-500/10 px-6 py-2.5 text-sm font-medium text-cyan-600 transition hover:bg-cyan-500/20 dark:text-cyan-300 dark:hover:bg-cyan-500/30"
+            >
+              Book a Consultation
+            </Link>
+            <p className="text-center text-sm uppercase tracking-[0.24em] text-muted-foreground/80 sm:text-right">{t("footer.copyright")}</p>
           </div>
-          <p className="uppercase tracking-[0.24em] text-muted-foreground/80">{t("footer.copyright")}</p>
         </div>
       </footer>
     </div>

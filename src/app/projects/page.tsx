@@ -69,9 +69,6 @@ export default function ProjectsPage() {
                     </div>
 
                     <div className="mt-8 flex flex-wrap gap-3">
-                      <Button asChild variant="outline">
-                        <Link href={project.github}>{t("projects.github") || "GitHub"}</Link>
-                      </Button>
                       <Button asChild>
                         <Link href={project.liveDemo}>{t("projects.liveDemo") || "Live Demo"}</Link>
                       </Button>
@@ -80,6 +77,15 @@ export default function ProjectsPage() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+
+          <div className="mt-16 flex justify-center">
+            <Link
+              href="/consultation"
+              className="inline-block rounded-full border border-cyan-400/50 bg-cyan-500/10 px-8 py-3 text-sm font-medium text-cyan-600 transition hover:bg-cyan-500/20 dark:text-cyan-300 dark:hover:bg-cyan-500/30"
+            >
+              Ready to start your project? Book a Consultation
+            </Link>
           </div>
         </div>
       </section>

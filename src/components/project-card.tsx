@@ -6,12 +6,11 @@ type ProjectCardProps = {
   title: string;
   description: string;
   technologies: string[];
-  github: string;
   liveDemo: string;
   image?: string;
 };
 
-export function ProjectCard({ title, description, technologies, github, liveDemo, image }: ProjectCardProps) {
+export function ProjectCard({ title, description, technologies, liveDemo, image }: ProjectCardProps) {
   return (
     <Reveal className="group rounded-[28px] border border-border bg-card shadow-none transition-transform duration-300 hover:-translate-y-1.5">
       <div className="overflow-hidden rounded-[28px] bg-card/70 transition duration-300 group-hover:bg-card/85">
@@ -43,14 +42,8 @@ export function ProjectCard({ title, description, technologies, github, liveDemo
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href={github}
-              className="rounded-full border border-cyan-400/40 bg-cyan-500/10 px-4 py-2 text-sm text-cyan-600 transition hover:bg-cyan-500/20 dark:border-cyan-300/40 dark:bg-cyan-300/10 dark:text-cyan-100 dark:hover:bg-cyan-300/20"
-            >
-              GitHub
-            </Link>
-            <Link
               href={liveDemo}
-              className="rounded-full border border-border bg-muted/50 px-4 py-2 text-sm text-foreground transition hover:border-cyan-400 hover:bg-cyan-500/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:border-cyan-300 dark:hover:bg-cyan-300/10"
+              className="rounded-full border border-border bg-muted/50 px-4 py-2 text-sm text-foreground transition hover:border-cyan-400 hover:bg-cyan-500/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:border-cyan-400 dark:hover:bg-cyan-300/10"
             >
               View Case Study
             </Link>
